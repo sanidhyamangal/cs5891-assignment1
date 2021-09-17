@@ -4,18 +4,18 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
 from game import *
 from learningAgents import ReinforcementAgent
 
-import random,util,math
+import random, util, math
+
 
 class QLearningAgent(ReinforcementAgent):
     """
@@ -54,7 +54,6 @@ class QLearningAgent(ReinforcementAgent):
         # return q_vals for state action pair
         return self.q_vals[(state, action)]
 
-
     def computeValueFromQValues(self, state):
         """
           Returns max_action Q(state,action)
@@ -68,15 +67,15 @@ class QLearningAgent(ReinforcementAgent):
 
         # if no actions then return 0
         if not _allowed_actions:
-          return 0.0
-        
+            return 0.0
+
         # create an instance of q_val and store all it's val
         _q_vals = util.Counter()
 
         # iterte throught all the list actions and store it's q_val
         for action in _allowed_actions:
-          _q_vals[action] = self.getQValue(state, action)
-        
+            _q_vals[action] = self.getQValue(state, action)
+
         # return the best q_val from set of all the q_val for that actions
         return _q_vals[_q_vals.argMax()]
 
@@ -93,15 +92,14 @@ class QLearningAgent(ReinforcementAgent):
 
         # iterate through each legal action and store it's q_val
         for action in self.getLegalActions(state):
-          # compute q_vals
-          _q_val = self.getQValue(state, action)
+            # compute q_vals
+            _q_val = self.getQValue(state, action)
 
-          # if q_val is gte than max_val then, assign that action as best action 
-          # and max_val as current q_Val
-          if _q_val >= max_val:
-            max_val = _q_val
-            best_action = action
-        
+            # if q_val is gte than max_val then, assign that action as best action
+            # and max_val as current q_Val
+            if _q_val >= max_val:
+                max_val = _q_val
+                best_action = action
 
         return best_action
 
@@ -124,10 +122,10 @@ class QLearningAgent(ReinforcementAgent):
         explore = util.flipCoin(self.epsilon)
 
         if explore:
-          # if in explore mode then select any random action from legal set of action
-          action = random.choice(legalActions)
+            # if in explore mode then select any random action from legal set of action
+            action = random.choice(legalActions)
         else:
-          action = self.getPolicy(state)
+            action = self.getPolicy(state)
 
         # return action
         return action
@@ -152,8 +150,9 @@ class QLearningAgent(ReinforcementAgent):
         # check if next state exists for the given state and action
         # if next state exists then add it's val too to q_val
         if nextState:
-          self.q_vals[(state, action)] +=  self.alpha * self.discount * self.getValue(nextState)
-
+            self.q_vals[(
+                state, action
+            )] += self.alpha * self.discount * self.getValue(nextState)
 
     def getPolicy(self, state):
         return self.computeActionFromQValues(state)
@@ -165,7 +164,12 @@ class QLearningAgent(ReinforcementAgent):
 class PacmanQAgent(QLearningAgent):
     "Exactly the same as QLearningAgent, but with different default parameters"
 
-    def __init__(self, epsilon=0.05,gamma=0.8,alpha=0.2, numTraining=0, **args):
+    def __init__(self,
+                 epsilon=0.05,
+                 gamma=0.8,
+                 alpha=0.2,
+                 numTraining=0,
+                 **args):
         """
         These default parameters can be changed from the pacman.py command line.
         For example, to change the exploration rate, try:
@@ -189,6 +193,6 @@ class PacmanQAgent(QLearningAgent):
         informs parent of action for Pacman.  Do not change or remove this
         method.
         """
-        action = QLearningAgent.getAction(self,state)
-        self.doAction(state,action)
+        action = QLearningAgent.getAction(self, state)
+        self.doAction(state, action)
         return action
