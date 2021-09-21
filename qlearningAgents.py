@@ -97,7 +97,7 @@ class QLearningAgent(ReinforcementAgent):
 
             # if q_val is gte than max_val then, assign that action as best action
             # and max_val as current q_Val
-            if _q_val >= max_val:
+            if _q_val > max_val:
                 max_val = _q_val
                 best_action = action
 
